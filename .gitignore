@@ -1,4 +1,3 @@
 .vscode
 
-images/
-*.xlsx
+# *.xlsx

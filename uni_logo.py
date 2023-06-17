@@ -18,11 +18,13 @@ class UniRanking:
             self.rankings = data['data']['rankings']
         return self.rankings
 
-    def download_uni_logo(self, num_uni=1000) -> None:
+    def download_uni_logo(self, num_uni=1000, path=None) -> None:
         if not self.rankings:
             self.get_uni_ranking()
 
-        self._check_img_folder()
+        self._check_img_folder(path)
+
+        savepath = Path(path)
 
         for rank in tqdm(self.rankings[:num_uni]):
             uni_name, ranking_str, short_path = rank['univNameEn'], rank['ranking'], rank['univLogo']
@@ -30,12 +32,15 @@ class UniRanking:
 
             rsp = requests.get(f"{self.base_url}/_uni/{short_path}", timeout=5)
 
-            with open(Path.cwd() / "images" / f"{uni_name}{Path(short_path).suffix}", 'wb') as f:
+            with open(savepath/ f"{uni_name}{Path(short_path).suffix}", 'wb') as f:
                 f.write(rsp.content)
         print("Done.")
 
-    def _check_img_folder(self) -> None:
-        folder_path = Path.cwd() / Path("images")
+    def _check_img_folder(self, path=None) -> None:
+        if path is None:
+          folder_path = Path.cwd() / Path("images")
+        else:
+          folder_path=Path(path)
         if not folder_path.exists():
             folder_path.mkdir()
             print("Folder 'images' created.")
