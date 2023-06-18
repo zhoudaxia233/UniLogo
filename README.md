@@ -5,7 +5,7 @@
 
 Below is a sample of the densely paved logos (*with 300 universities*):
 <figure>
-<img src="300-logos.png" alt="Densely paved logos" style="width:95%" />
+<img src="./images/300-logos.png" alt="Densely paved logos" style="width:95%" />
 </figure>
 
 
