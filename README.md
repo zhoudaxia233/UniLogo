@@ -9,6 +9,11 @@ Below is a sample of the densely paved logos (*with 300 universities*):
 </figure>
 
 
+## Next Steps
+
+- [ ] Consider the proportion of the dominant color in the logo during sorting.
+
+
 ## Acknowledgements
 Thanks to ARWU for the data, and to the respective universities for their logos.
 
