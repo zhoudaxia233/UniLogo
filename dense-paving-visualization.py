@@ -41,6 +41,7 @@ class LogoPainting:
         auxillary_canvas = [[0] * self.canvas_height for _ in range(self.canvas_width)]
 
         next_pos = [0, 0]  # The next available position in the canvas
+        max_y = 0  # Keep track of the maximum y-coordinate where a logo is placed
 
         for image_path, _ in tqdm(path_color):
             with Image.open(image_path) as image:
@@ -64,6 +65,9 @@ class LogoPainting:
                             for h in range(image_height):
                                 auxillary_canvas[next_pos[0] + w][next_pos[1] + h] = 1
 
+                        # Update the maximum y-coordinate
+                        max_y = max(max_y, next_pos[1] + image_height)
+
                         # Update the next available position
                         next_pos[0] += self.single_logo_size
                         break
@@ -74,6 +78,8 @@ class LogoPainting:
                             next_pos[0] = 0
                             next_pos[1] += self.single_logo_size
 
+        # Crop the canvas to remove empty rows
+        self.canvas = self.canvas.crop((0, 0, self.canvas_width, max_y))
         self.canvas.save(f"{self.num_logos}-logos.png")
 
 
