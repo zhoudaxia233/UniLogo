@@ -1,3 +1,4 @@
+import math
 from pathlib import Path
 from colorsys import rgb_to_hsv
 
@@ -7,14 +8,16 @@ from tqdm import tqdm
 
 
 class LogoPainting:
-    def __init__(
-        self, logo_path, canvas_width=1000, canvas_height=1000, single_logo_size=150
-    ):
+    def __init__(self, logo_path, num_logos=1000, single_logo_size=150):
         self.path = Path(logo_path)
-        self.canvas_width = canvas_width
-        self.canvas_height = canvas_height
-        self.canvas = Image.new("RGBA", (canvas_width, canvas_height))
+        self.num_logos = num_logos
         self.single_logo_size = single_logo_size
+
+        logos_per_dimension = math.ceil(math.sqrt(self.num_logos))
+
+        self.canvas_width = logos_per_dimension * self.single_logo_size
+        self.canvas_height = logos_per_dimension * self.single_logo_size
+        self.canvas = Image.new("RGBA", (self.canvas_width, self.canvas_height))
 
     def get_dominant_color(self, image_path):
         # Get the dominant color in RGB
@@ -33,11 +36,11 @@ class LogoPainting:
         path_color.sort(key=lambda x: x[1], reverse=True)
         return path_color
 
-    def paint(self, num_uni=500):
+    def paint(self):
         path_color = self.get_sorted_path_color_list()
         auxillary_canvas = [[0] * self.canvas_height for _ in range(self.canvas_width)]
 
-        for image_path, _ in tqdm(path_color[:num_uni]):
+        for image_path, _ in tqdm(path_color):
             with Image.open(image_path) as image:
                 image.thumbnail((self.single_logo_size, self.single_logo_size))
                 image_width, image_height = image.size
@@ -60,9 +63,9 @@ class LogoPainting:
                     else:
                         continue
                     break
-        return self.canvas.save(f"{num_uni}-logos.png")
+        return self.canvas.save(f"{self.num_logos}-logos.png")
 
 
 if __name__ == "__main__":
     logo_painting = LogoPainting("./images/img_transparent")
-    logo_painting.paint(1000)
+    logo_painting.paint()
