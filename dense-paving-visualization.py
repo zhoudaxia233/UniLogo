@@ -37,7 +37,7 @@ class LogoPainting:
         return path_color
 
     def paint(self):
-        path_color = self.get_sorted_path_color_list()
+        path_color = self.get_sorted_path_color_list()[: self.num_logos]
         auxillary_canvas = [[0] * self.canvas_height for _ in range(self.canvas_width)]
 
         next_pos = [0, 0]  # The next available position in the canvas
