@@ -40,30 +40,41 @@ class LogoPainting:
         path_color = self.get_sorted_path_color_list()
         auxillary_canvas = [[0] * self.canvas_height for _ in range(self.canvas_width)]
 
+        next_pos = [0, 0]  # The next available position in the canvas
+
         for image_path, _ in tqdm(path_color):
             with Image.open(image_path) as image:
                 image.thumbnail((self.single_logo_size, self.single_logo_size))
                 image_width, image_height = image.size
 
-                # Try to place the image at each position in the canvas
-                for i in range(self.canvas_width - image_width + 1):
-                    for j in range(self.canvas_height - image_height + 1):
-                        # Check if the space is empty
-                        if all(
-                            auxillary_canvas[i + w][j + h] == 0
+                # Check if the image can be placed at the next available position
+                while True:
+                    if (
+                        next_pos[0] + image_width <= self.canvas_width
+                        and next_pos[1] + image_height <= self.canvas_height
+                        and all(
+                            auxillary_canvas[next_pos[0] + w][next_pos[1] + h] == 0
                             for w in range(image_width)
                             for h in range(image_height)
-                        ):
-                            # Place the image and mark the space as filled
-                            self.canvas.paste(image, (i, j))
-                            for w in range(image_width):
-                                for h in range(image_height):
-                                    auxillary_canvas[i + w][j + h] = 1
-                            break
+                        )
+                    ):
+                        # Place the image and mark the space as filled
+                        self.canvas.paste(image, (next_pos[0], next_pos[1]))
+                        for w in range(image_width):
+                            for h in range(image_height):
+                                auxillary_canvas[next_pos[0] + w][next_pos[1] + h] = 1
+
+                        # Update the next available position
+                        next_pos[0] += self.single_logo_size
+                        break
                     else:
-                        continue
-                    break
-        return self.canvas.save(f"{self.num_logos}-logos.png")
+                        # If the image doesn't fit here, try the next column in the same row
+                        next_pos[0] += self.single_logo_size
+                        if next_pos[0] >= self.canvas_width:
+                            next_pos[0] = 0
+                            next_pos[1] += self.single_logo_size
+
+        self.canvas.save(f"{self.num_logos}-logos.png")
 
 
 if __name__ == "__main__":
