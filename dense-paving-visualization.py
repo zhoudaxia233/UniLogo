@@ -65,4 +65,4 @@ class LogoPainting:
 
 if __name__ == "__main__":
     logo_painting = LogoPainting("./images/img_transparent")
-    print(logo_painting.paint(100))
+    logo_painting.paint(1000)
