@@ -3,9 +3,9 @@
 **UniLogo** assembles the logos of the top 1000 universities according to the *Academic Ranking of World Universities* (ARWU). The unique feature of this project is the color-based sorting of logos into a spectrum, presented in two formats: **grid** and **dense paving**.  
 
 
-Below is the densely paved version of the logos:
+Below is a sample of the densely paved logos (*with 300 universities*):
 <figure>
-<img src="logos.png" alt="Densely paved logos" style="width:95%" />
+<img src="300-logos.png" alt="Densely paved logos" style="width:95%" />
 </figure>
 
 
