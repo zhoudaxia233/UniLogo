@@ -1,7 +1,9 @@
 beautifulsoup4==4.12.2
+fast-colorthief==0.0.4
+ipykernel==6.23.2
 matplotlib==3.7.1
 openpyxl==3.1.2
-opencv-python==4.7.0.72
 pandas==2.0.1
 Pillow==9.5.0
+requests==2.31.0
 tqdm==4.65.0
