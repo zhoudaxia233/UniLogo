@@ -9,6 +9,12 @@ Below is a sample of the densely paved logos (*with 300 universities*):
 </figure>
 
 
+Below is the densely paved logos for **top 300** universities by ranking:
+<figure>
+<img src="./images/top300.png" alt="Densely paved logos" style="width:95%" />
+</figure>
+
+
 ## Next Steps
 
 - [ ] Consider the proportion of the dominant color in the logo during sorting.
