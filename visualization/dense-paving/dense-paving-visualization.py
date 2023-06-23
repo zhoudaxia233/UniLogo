@@ -8,17 +8,14 @@ from tqdm import tqdm
 
 
 class LogoPainting:
-    def __init__(self, logo_path, num_logos=1000, single_logo_size=None):
+    def __init__(self, logo_path, num_logos=1000, single_canvas_size=None):
         self.path = Path(logo_path)
         self.num_logos = num_logos
-        if single_logo_size is None:
-            self.single_logo_size=[150,150]
-        else:
-            self.single_logo_size = single_logo_size
+        self.single_canvas_size = single_canvas_size or (150, 150)
         logos_per_dimension = math.ceil(math.sqrt(self.num_logos))
 
-        self.canvas_width = logos_per_dimension * self.single_logo_size[0]
-        self.canvas_height = logos_per_dimension * self.single_logo_size[1]
+        self.canvas_width = logos_per_dimension * self.single_canvas_size[0]
+        self.canvas_height = logos_per_dimension * self.single_canvas_size[1]
         self.canvas = Image.new("RGBA", (self.canvas_width, self.canvas_height))
 
     def get_dominant_color(self, image_path):
@@ -47,7 +44,7 @@ class LogoPainting:
 
         for image_path, _ in tqdm(path_color):
             with Image.open(image_path) as image:
-                image.thumbnail((self.single_logo_size[0], self.single_logo_size[1]))
+                image.thumbnail(self.single_canvas_size)
                 image_width, image_height = image.size
 
                 # Check if the image can be placed at the next available position
@@ -71,14 +68,14 @@ class LogoPainting:
                         max_y = max(max_y, next_pos[1] + image_height)
 
                         # Update the next available position
-                        next_pos[0] += self.single_logo_size[0]
+                        next_pos[0] += self.single_canvas_size[0]
                         break
                     else:
                         # If the image doesn't fit here, try the next column in the same row
-                        next_pos[0] += self.single_logo_size[0]
+                        next_pos[0] += self.single_canvas_size[0]
                         if next_pos[0] >= self.canvas_width:
                             next_pos[0] = 0
-                            next_pos[1] += self.single_logo_size[1]
+                            next_pos[1] += self.single_canvas_size[1]
 
         # Crop the canvas to remove empty rows
         self.canvas = self.canvas.crop((0, 0, self.canvas_width, max_y))
@@ -86,5 +83,5 @@ class LogoPainting:
 
 
 if __name__ == "__main__":
-    logo_painting = LogoPainting("./images/img_transparent", single_logo_size=[100,350])
+    logo_painting = LogoPainting("./images/img_transparent")
     logo_painting.paint()
